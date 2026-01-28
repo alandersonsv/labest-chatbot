@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Falar com Atendente Humano",
+    "version": "1.0.4",
+    "description": "Envia o contexto da conversa para um Flow do Twilio Studio, cria uma Task no Flex e encerra o atendimento automatizado."
+  },
+  "servers": [
+    {
+      "url": "https://dialogflow-whatsapp-bot-940683850801.southamerica-east1.run.app"
+    }
+  ],
+  "paths": {
+    "/dialogflow": {
+      "post": {
+        "summary": "Transfere conversa para atendimento humano",
+        "operationId": "falarComAtendenteHumano",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "telefone": {
+                    "type": "string",
+                    "description": "O telefone do usuário (variável de sessão telefone_usuario)",
+                    "example": "whatsapp:+5511999999999"
+                  },
+                  "cpf": {
+                    "type": "string",
+                    "description": "CPF do usuário, se disponível"
+                  },
+                  "cep": {
+                    "type": "string",
+                    "description": "CEP informado pelo usuário"
+                  },
+                  "intencao": {
+                    "type": "string",
+                    "enum": [
+                      "ATENDIMENTO_HUMANO"
+                    ],
+                    "description": "Motivo do contato"
+                  },
+                  "resumo": {
+                    "type": "string",
+                    "description": "Resumo curto da conversa"
+                  },
+                  "ultimaMensagem": {
+                    "type": "string",
+                    "description": "Última mensagem enviada pelo usuário"
+                  }
+                },
+                "required": [
+                  "telefone",
+                  "intencao",
+                  "resumo",
+                  "ultimaMensagem"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Conversa enviada para o Flex com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Você será atendido por um de nossos especialistas em instantes."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

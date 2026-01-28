@@ -1,0 +1,6 @@
+node_modules
+dialogflow
+.env
+.git
+.gitignore
+

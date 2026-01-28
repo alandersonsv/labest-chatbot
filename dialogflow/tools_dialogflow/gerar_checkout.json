@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Gerar Link de Compra LABEST",
+    "version": "1.0.0",
+    "description": "API para gerar o link de checkout direto do laboratório LABEST"
+  },
+  "servers": [
+    {
+      "url": "https://dialogflow-whatsapp-bot-940683850801.southamerica-east1.run.app"
+    }
+  ],
+  "paths": {
+    "/dialogflow": {
+      "post": {
+        "summary": "Gera link de checkout para o laboratório selecionado",
+        "operationId": "gerarLinkCheckout",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigoLaboratorio": {
+                    "type": "string",
+                    "description": "Código do laboratório selecionado",
+                    "example": "1417"
+                  }
+                },
+                "required": [
+                  "codigoLaboratorio"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resposta do backend com o link de checkout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fulfillment_response": {
+                      "type": "object",
+                      "properties": {
+                        "messages": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "object",
+                                "properties": {
+                                  "text": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "sessionInfo": {
+                      "type": "object",
+                      "properties": {
+                        "parameters": {
+                          "type": "object",
+                          "properties": {
+                            "checkoutUrl": {
+                              "type": "string",
+                              "example": "https://checkout.labest.com.br/1417"
+                            },
+                            "message": {
+                              "type": "string",
+                              "example": "Link de checkout gerado com sucesso"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

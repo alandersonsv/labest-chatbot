@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "LABEST Toxicological Exam Status API",
+    "version": "1.0.0",
+    "description": "API para consultar o status de um exame toxicológico da LABEST."
+  },
+  "servers": [
+    {
+      "url": "https://dialogflow-whatsapp-bot-940683850801.southamerica-east1.run.app"
+    }
+  ],
+  "paths": {
+    "/dialogflow": {
+      "post": {
+        "summary": "Consulta o status do exame toxicológico",
+        "operationId": "consultarStatusExame",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "documento": {
+                    "type": "string",
+                    "description": "CPF ou CNPJ (somente números)",
+                    "example": "14302636793"
+                  }
+                },
+                "required": [
+                  "documento"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resposta do backend da LABEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fulfillment_response": {
+                      "type": "object",
+                      "properties": {
+                        "messages": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "text": {
+                                "type": "object",
+                                "properties": {
+                                  "text": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

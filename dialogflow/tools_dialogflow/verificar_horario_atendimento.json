@@ -1,0 +1,77 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Verificar Horário de Atendimento",
+    "version": "1.0.3",
+    "description": "Verifica se o atendimento humano está disponível no momento"
+  },
+  "servers": [
+    {
+      "url": "https://dialogflow-whatsapp-bot-940683850801.southamerica-east1.run.app"
+    }
+  ],
+  "paths": {
+    "/dialogflow": {
+      "post": {
+        "summary": "Verifica se está dentro do horário de atendimento",
+        "operationId": "verificarHorarioAtendimento",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "verificarHorario": {
+                    "type": "boolean",
+                    "description": "Flag obrigatória para acionar verificação",
+                    "example": true
+                  }
+                },
+                "required": [
+                  "verificarHorario"
+                ]
+              },
+              "example": {
+                "verificarHorario": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado da verificação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionInfo": {
+                      "type": "object",
+                      "properties": {
+                        "parameters": {
+                          "type": "object",
+                          "properties": {
+                            "isBusinessHours": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "isBusinessHours"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "sessionInfo"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
