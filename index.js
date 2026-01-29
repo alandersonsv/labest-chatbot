@@ -38,15 +38,23 @@ const location = process.env.LOCATION;
 const agentId = process.env.AGENT_ID;
 
 app.post("/whatsapp", async (req, res) => {
-  const userMessage = req.body.Body; // Texto do usuário
-  const from = req.body.From;        // Ex: whatsapp:+5511999999999
+  // --- MUDANÇA: Captura Inteligente (Formulário ou JSON) ---
+  const Body = req.body.Body;
+  
+  // No JSON do Conversations, o remetente vem como 'Author'. No padrão, vem como 'From'.
+  const From = req.body.Author || req.body.From; 
+  
+  // Tenta pegar o ID da conversa onde quer que ele esteja (ConversationSid ou ChannelSid)
+  const ConversationSid = req.body.ConversationSid || req.body.ChannelSid;
+  const ParticipantSid = req.body.ParticipantSid;
+  // -------------------------------------------------------------
   
   // Limpeza do ID da sessão (remove o prefixo 'whatsapp:')
-  const sessionId = from?.replace("whatsapp:", "");
+  const sessionId = From?.replace("whatsapp:", "");
 
-  console.log(`\n📩 [WHATSAPP] De: ${sessionId} | Msg: "${userMessage}"`);
+  console.log(`\n📩 [WHATSAPP] CH: ${ConversationSid} | MB: ${ParticipantSid} | Msg: "${Body}"`);
 
-  if (!userMessage) {
+  if (!Body) {
     return res.status(200).send(""); // Ignora mensagens vazias/status
   }
 
@@ -62,13 +70,15 @@ app.post("/whatsapp", async (req, res) => {
     const request = {
       session: sessionPath,
       queryInput: {
-        text: { text: userMessage },
+        text: { text: Body },
         languageCode: "pt-BR",
       },
-      // 🔥 ALTERAÇÃO AQUI: Injeta o telefone como parâmetro de sessão
+      // 2. INJEÇÃO: Passamos os SIDs para a memória do Dialogflow
       queryParams: {
         parameters: {
-          telefone_usuario: from
+          telefone_usuario: From,
+          conversationSid: ConversationSid,
+          participantSid: ParticipantSid
         }
       }
     };
