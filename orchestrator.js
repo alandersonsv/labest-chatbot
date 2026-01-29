@@ -22,8 +22,10 @@ export async function dialogflowOrchestrator(req, res) {
     // =====================================================
     if (actionName === "falarComAtendenteHumano" || params.intencao === "ATENDIMENTO_HUMANO") {
       result = await falarComAtendenteHumano({
-        // O index.js injetou o telefone na sessão -> Playbook pegou -> mandou pra cá
-        telefone: params.telefone, 
+        telefone: params.telefone || params.telefone_usuario, 
+        // 3. REPASSE: Pegamos os IDs que a tool entregou
+        conversationSid: params.conversationSid,
+        participantSid: params.participantSid,
         cpf: params.cpf,
         cep: params.cep,
         intencao: params.intencao,
