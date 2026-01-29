@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Falar com Atendente Humano",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "Envia o contexto da conversa para um Flow do Twilio Studio, cria uma Task no Flex e encerra o atendimento automatizado."
   },
   "servers": [
@@ -25,8 +25,7 @@
                 "properties": {
                   "telefone": {
                     "type": "string",
-                    "description": "O telefone do usuário (variável de sessão telefone_usuario)",
-                    "example": "whatsapp:+5511999999999"
+                    "description": "O telefone do usuário (obrigatório usar a variável de sessão telefone_usuario)"
                   },
                   "cpf": {
                     "type": "string",
